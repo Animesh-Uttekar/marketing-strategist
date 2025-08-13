@@ -1,19 +1,21 @@
 
-venv/
-
-
-.env
-
-
-__pycache__/
+# Backend (Python)
+backend/venv/
+backend/.env
+backend/__pycache__/
 *.py[cod]
-
-
 .ipynb_checkpoints/
 
+# Frontend (React)
+frontend/node_modules/
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
 
+# General
 .DS_Store
-
-
 *.log
 *.tmp
+venv/
