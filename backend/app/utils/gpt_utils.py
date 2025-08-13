@@ -1,9 +1,9 @@
-import openai
+from openai import OpenAI
 import json
 from app.config import OPENAI_API_KEY, MODEL_NAME
 from app.models.models import SimulationResult
 
-openai.api_key = OPENAI_API_KEY
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 def get_simulation_params_from_context(company_description, advertisement_goal) -> tuple[float, float, float, float]:
     prompt = f"""
@@ -40,13 +40,13 @@ def get_simulation_params_from_context(company_description, advertisement_goal) 
 
 """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model=MODEL_NAME,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
     )
 
-    content = response['choices'][0]['message']['content']
+    content = response.choices[0].message.content
     try:
         parsed = json.loads(content)
         ctr = float(parsed.get("ctr", 0.015))
@@ -84,9 +84,38 @@ def get_chatgpt_marketing_insight(simulation_data: SimulationResult, company_des
     ## Simulation result:
     {simulation_data.model_dump()}
 """
-    response = openai.ChatCompletion.create(
-    model=MODEL_NAME,
-    messages=[{"role": "user", "content": prompt}],
-    temperature=0.3,
-)
-    return response['choices'][0]['message']['content'].strip()
+    try:
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+        )
+    except Exception as e:
+        return _generate_gpt_fallback_insight(simulation_data, ctr, conversion_rate)
+    return response.choices[0].message.content.strip()
+
+
+def _generate_gpt_fallback_insight(simulation_data: SimulationResult, ctr: float, conversion_rate: float) -> str:
+    """Generate a structured fallback insight when the OpenAI model fails"""
+    if ctr < 1.0:
+        bottleneck = "Low click-through rate"
+        cause = "Ad creative or targeting may not be compelling enough"
+        suggestion = "Test different headlines, visuals, or audience segments"
+    elif conversion_rate < 2.0:
+        bottleneck = "Poor conversion rate"
+        cause = "Landing page experience or offer may not match user expectations"
+        suggestion = "Optimize landing page design and ensure message consistency"
+    else:
+        bottleneck = "Overall campaign performance"
+        cause = "Multiple factors affecting the conversion funnel"
+        suggestion = "Focus on A/B testing key elements and audience refinement"
+    
+    return f"""**Bottleneck:** {bottleneck}
+
+**Root Cause:** {cause}
+
+**Optimization Suggestion:** {suggestion}
+
+**ROI Assessment:** Your campaign achieved a {simulation_data.roi_fit_score}% fit score, indicating {simulation_data.roi_fit_tag.lower()} potential.
+
+*Generated using OpenAI API*"""

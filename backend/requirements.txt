@@ -41,7 +41,10 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
 referencing==0.36.2
-requests==2.32.4
+transformers==4.36.0
+torch==2.1.0
+accelerate==0.25.0
+sentencepiece==0.1.99
 rpds-py==0.26.0
 six==1.17.0
 smmap==5.0.2

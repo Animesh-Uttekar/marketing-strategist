@@ -1,9 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 class SimulationRequest(BaseModel):
     company_description: str
     advertisement_goal: str
+    use_hugging_face: Optional[bool] = False  # Default to OpenAI, set True for Hugging Face
 
 class SimulationResult(BaseModel):
     total_impressions: int
