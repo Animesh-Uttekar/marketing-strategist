@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.models.models import SimulationRequest, SimulationResponse
 from app.simulator.simulator import run_market_fit_simulation
 from app.utils.gpt_utils import get_chatgpt_marketing_insight, get_simulation_params_from_context
@@ -12,6 +13,15 @@ except ImportError:
     print("⚠️  Hugging Face utilities not available (transformers not installed)")
 
 app = FastAPI(title="AI Marketing Agent")
+
+# Add CORS middleware to allow frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/simulate", response_model=SimulationResponse)
 def simulate(data: SimulationRequest):
