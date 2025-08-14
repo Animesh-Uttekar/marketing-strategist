@@ -1,18 +1,18 @@
 
-# Backend (Python)
-backend/venv/
-backend/.env
-backend/.env.local
-backend/.env.production
-backend/__pycache__/
-backend/**/__pycache__/
-backend/.pytest_cache/
-backend/htmlcov/
-backend/.coverage
-backend/.tox/
-backend/dist/
-backend/build/
-backend/*.egg-info/
+# API (Python Backend)
+api/venv/
+api/.env
+api/.env.local
+api/.env.production
+api/__pycache__/
+api/**/__pycache__/
+api/.pytest_cache/
+api/htmlcov/
+api/.coverage
+api/.tox/
+api/dist/
+api/build/
+api/*.egg-info/
 *.py[cod]
 *$py.class
 *.so

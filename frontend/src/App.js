@@ -78,7 +78,10 @@ function App() {
     try {
       showNotification('Running AI-powered marketing analysis...', 'info');
       
-      const response = await fetch('http://localhost:8000/simulate', {
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/simulate' 
+        : 'http://localhost:8000/simulate';
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
