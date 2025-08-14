@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { CheckCircle, AlertCircle, Info, X, AlertTriangle } from 'lucide-react';
 
-const NotificationToast = ({ message, type = 'info', onClose, duration = 4000 }) => {
+const NotificationToast = ({ message, type = 'info', onClose, duration = 4000, autoClose = true }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    // Trigger entrance animation
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (duration > 0) {
-      const timer = setTimeout(() => {
-        handleClose();
-      }, duration);
-      return () => clearTimeout(timer);
-    }
-  }, [duration]);
-
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsExiting(true);
     setTimeout(() => {
       onClose();
     }, 300);
-  };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (autoClose && duration > 0) {
+      const timer = setTimeout(handleClose, duration);
+      return () => clearTimeout(timer);
+    }
+  }, [autoClose, duration, handleClose]);
 
   const getIcon = () => {
     switch (type) {

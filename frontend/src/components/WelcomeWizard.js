@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Target, BarChart3, Brain, Zap, User, Building, TrendingUp, Sparkles } from 'lucide-react';
-import { Button, Select, Badge } from './shared';
+import { ChevronRight, ChevronLeft, Brain, TrendingUp, Sparkles } from 'lucide-react';
+import { Button } from './shared';
 
 const WelcomeWizard = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);

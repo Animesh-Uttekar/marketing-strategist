@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, MousePointer, Eye, ShoppingCart, Target, Lightbulb, AlertTriangle } from 'lucide-react';
-import { Card, Button, Badge } from './shared';
+import { Card } from './shared';
 
 const ResultsDashboard = ({ data }) => {
   const [activeTab, setActiveTab] = useState('funnel');

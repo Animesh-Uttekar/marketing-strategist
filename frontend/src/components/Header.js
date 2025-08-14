@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Target, BarChart3, Plus, History, Settings, ChevronDown, Brain, Zap } from 'lucide-react';
-import { Button, Select, Badge } from './shared';
+import { Target, Plus, History, Settings, ChevronDown, Brain, Zap } from 'lucide-react';
+import { Button } from './shared';
 
 const Header = ({ onNewAnalysis, simulationHistory = [], userPreferences, onPreferencesChange }) => {
   const [showHistory, setShowHistory] = useState(false);
